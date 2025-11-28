@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+
+// Load .env dari root project
+require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') });
+
 const { swaggerUi, specs } = require('./config/swagger');
 
 const app = express();
@@ -21,30 +25,6 @@ const rekamMedisRoutes = require('./routes/rekamMedisRoutes');
 // Use routes
 app.use('/api/records', rekamMedisRoutes);
 
-/**
- * @swagger
- * /health:
- *   get:
- *     summary: Health check endpoint
- *     tags: [Health]
- *     responses:
- *       200:
- *         description: Service is running
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
- *                 service:
- *                   type: string
- *                   example: Medical Records Service
- *                 timestamp:
- *                   type: string
- *                   format: date-time
- */
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
@@ -56,6 +36,14 @@ app.get('/health', (req, res) => {
 // MongoDB connection
 const PORT = process.env.MEDICAL_RECORD_PORT || 3001;
 const MONGODB_URI = process.env.MONGODB_URI;
+
+// Debug: Cek apakah MONGODB_URI terbaca
+console.log('MONGODB_URI:', MONGODB_URI ? 'Found' : 'NOT FOUND');
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGODB_URI not found in .env file');
+  process.exit(1);
+}
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
