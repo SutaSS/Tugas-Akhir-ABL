@@ -22,30 +22,6 @@ const rekamMedisRoutes = require('./routes/rekamMedisRoutes');
 // Use routes
 app.use('/api/records', rekamMedisRoutes);
 
-/**
- * @swagger
- * /health:
- *   get:
- *     summary: Health check endpoint
- *     tags: [Health]
- *     responses:
- *       200:
- *         description: Service is running
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
- *                 service:
- *                   type: string
- *                   example: Medical Records Service
- *                 timestamp:
- *                   type: string
- *                   format: date-time
- */
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
