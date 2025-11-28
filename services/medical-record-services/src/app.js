@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
 const { swaggerUi, specs } = require('./config/swagger');
 
 const app = express();
@@ -55,7 +56,12 @@ app.get('/health', (req, res) => {
 
 // MongoDB connection
 const PORT = process.env.MEDICAL_RECORD_PORT || 3001;
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGO_URI || process.env.MONGODB_URI;
+
+if (!MONGODB_URI) {
+  console.error('❌ MONGO_URI tidak ditemukan di .env file');
+  process.exit(1);
+}
 
 mongoose.connect(MONGODB_URI)
   .then(() => {

@@ -1,4 +1,6 @@
 const RekamMedis = require('../models/RekamMedis');
+const Dokter = require('../models/Dokter');
+const Perawat = require('../models/Perawat');
 
 // GET all medical records
 exports.getAllRecords = async (req, res) => {

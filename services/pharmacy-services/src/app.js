@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../../.env') });
 const { swaggerUi, specs } = require('./config/swagger');
 
 const app = express();
@@ -55,7 +56,7 @@ app.get('/health', (req, res) => {
 
 // MongoDB connection
 const PORT = process.env.PHARMACY_PORT || 3002;
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
